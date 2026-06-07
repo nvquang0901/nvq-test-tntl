@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==========================================================================
     // Mặc định chọn ngày 20/10/2024 (Ngày Phụ nữ Việt Nam - cột mốc kỷ niệm đẹp)
     // Thùy Linh & Bạn có thể tùy chỉnh ngày này theo ý muốn
-    const START_DATE = new Date("2024-10-20T00:00:00");
+    const START_DATE = new Date("2024-02-14T00:00:00");
 
     // ==========================================================================
     // 2. DOM ELEMENTS & CONSTANTS
