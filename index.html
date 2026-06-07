@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gửi Trần Nguyễn Thuỳ Linh - Em là cả thế giới của anh 💖</title>
+    <meta name="description" content="Trang web tình yêu lãng mạn dành riêng cho Trần Nguyễn Thuỳ Linh. Em là điều tuyệt vời nhất từng đến bên đời anh!">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Quicksand:wght@400;500;600;700&family=Sacramento&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ================= INTRO ENVELOPE ================= -->
+    <div id="intro-screen">
+        <div class="envelope-container">
+            <div class="envelope-wrapper">
+                <div class="envelope">
+                    <div class="flap"></div>
+                    <div class="pocket"></div>
+                    <div class="letter">
+                        <div class="letter-preview">
+                            <p class="cursive-text">Gửi em Thùy Linh...</p>
+                            <p class="desc-text">Món quà nhỏ đầy ắp yêu thương anh tự tay làm dành cho em. Nhấp vào nút trái tim bên dưới để mở nhé! 💌</p>
+                        </div>
+                    </div>
+                    <!-- Hello Kitty Ribbon Seal -->
+                    <button class="heart-seal-btn" id="open-envelope-btn" aria-label="Mở thư tình">
+                        <svg viewBox="0 0 100 100" class="seal-svg">
+                            <!-- Outer Heart -->
+                            <path d="M 50 30 C 35 10, 15 25, 50 75 C 85 25, 65 10, 50 30 Z" fill="#ff4d6d" />
+                            <!-- Inner Bow (Hello Kitty Signature) -->
+                            <g transform="translate(32, 28) scale(0.7)">
+                                <circle cx="25" cy="25" r="8" fill="#fff" />
+                                <path d="M 25 25 C 10 10, 5 30, 25 25" fill="#fff" />
+                                <path d="M 25 25 C 40 10, 45 30, 25 25" fill="#fff" />
+                            </g>
+                        </svg>
+                        <span class="click-me">Mở Ra Nè</span>
+                    </button>
+                </div>
+            </div>
+            <div class="envelope-text">
+                <h1>Gửi Người Tớ Yêu... 💌</h1>
+                <p>Thùy Linh ơi, anh có điều này muốn nói với em...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <div id="main-content" class="hidden">
+        <!-- Floating hearts canvas background -->
+        <canvas id="hearts-canvas"></canvas>
+
+        <!-- Fixed/Draggable Cute Music Player -->
+        <div class="music-player" id="draggable-player">
+            <div class="disc-wrapper">
+                <!-- Rotating Vinyl with Hello Kitty Inside -->
+                <div class="vinyl" id="vinyl-disc">
+                    <svg viewBox="0 0 100 100" class="vinyl-kitty">
+                        <!-- Head -->
+                        <ellipse cx="50" cy="55" rx="28" ry="20" fill="#ffffff" stroke="#ff8da1" stroke-width="2.5" />
+                        <!-- Ears -->
+                        <path d="M 24 42 C 18 28, 22 17, 32 26" fill="#ffffff" stroke="#ff8da1" stroke-width="2.5" />
+                        <path d="M 76 42 C 82 28, 78 17, 68 26" fill="#ffffff" stroke="#ff8da1" stroke-width="2.5" />
+                        <!-- Bow -->
+                        <g transform="translate(18, 16) scale(0.6)">
+                            <circle cx="15" cy="15" r="5" fill="#ff4d6d" />
+                            <path d="M 15 15 C 5 5, 2 20, 15 15" fill="#ff4d6d" />
+                            <path d="M 15 15 C 25 5, 28 20, 15 15" fill="#ff4d6d" />
+                        </g>
+                        <!-- Eyes -->
+                        <circle cx="40" cy="53" r="2.5" fill="#2d3748" />
+                        <circle cx="60" cy="53" r="2.5" fill="#2d3748" />
+                        <!-- Nose -->
+                        <ellipse cx="50" cy="59" rx="2.5" ry="1.5" fill="#ffd166" />
+                    </svg>
+                </div>
+                <div class="vinyl-center"></div>
+            </div>
+            <div class="player-controls">
+                <p class="song-title">Yêu Em Nhiều Hơn Mỗi Ngày 💕</p>
+                <div class="btn-group">
+                    <button class="control-btn" id="play-pause-btn" aria-label="Phát/Tạm dừng nhạc">
+                        <!-- Play Icon SVG -->
+                        <svg viewBox="0 0 24 24" id="play-icon" class="control-icon"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+                        <!-- Pause Icon SVG -->
+                        <svg viewBox="0 0 24 24" id="pause-icon" class="control-icon hidden"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" fill="currentColor"/></svg>
+                    </button>
+                    <button class="control-btn" id="music-volume-btn" aria-label="Bật/Tắt âm thanh">
+                        <!-- Volume Icon SVG -->
+                        <svg viewBox="0 0 24 24" id="volume-up-icon" class="control-icon"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" fill="currentColor"/></svg>
+                        <!-- Volume Muted Icon SVG -->
+                        <svg viewBox="0 0 24 24" id="volume-off-icon" class="control-icon hidden"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.21.05-.42.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73 4.27 3zM12 4L9.91 6.09 12 8.18V4z" fill="currentColor"/></svg>
+                    </button>
+                </div>
+            </div>
+            <!-- Audio Tag (pointing to a sweet lofi love track) -->
+            <audio id="bg-music" loop>
+                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+            </audio>
+        </div>
+
+        <!-- ================= HERO SECTION (LOVE CLOCK) ================= -->
+        <header class="hero">
+            <div class="hello-kitty-top-decor">
+                <!-- Hello Kitty Bow SVG -->
+                <svg viewBox="0 0 100 60" class="kitty-bow-top">
+                    <circle cx="50" cy="30" r="12" fill="#ff4d6d" stroke="#fff" stroke-width="3"/>
+                    <path d="M 50 30 C 25 10, 15 45, 50 30" fill="#ff4d6d" stroke="#fff" stroke-width="3"/>
+                    <path d="M 50 30 C 75 10, 85 45, 50 30" fill="#ff4d6d" stroke="#fff" stroke-width="3"/>
+                </svg>
+            </div>
+            <h2 class="love-subtitle">Chào mừng công chúa nhỏ Trần Nguyễn Thuỳ Linh 💖</h2>
+            <h1 class="love-title">Chúng Mình Đã Bên Nhau</h1>
+
+            <!-- Love Timer Clock -->
+            <div class="love-clock-container">
+                <div class="clock-card">
+                    <span id="days" class="clock-num">00</span>
+                    <span class="clock-label">Ngày</span>
+                </div>
+                <div class="clock-divider">:</div>
+                <div class="clock-card">
+                    <span id="hours" class="clock-num">00</span>
+                    <span class="clock-label">Giờ</span>
+                </div>
+                <div class="clock-divider">:</div>
+                <div class="clock-card">
+                    <span id="minutes" class="clock-num">00</span>
+                    <span class="clock-label">Phút</span>
+                </div>
+                <div class="clock-divider">:</div>
+                <div class="clock-card">
+                    <span id="seconds" class="clock-num">00</span>
+                    <span class="clock-label">Giây</span>
+                </div>
+            </div>
+
+            <div class="love-footer-text">
+                <p>Mỗi một giây trôi qua bên em đều là những khoảnh khắc tuyệt vời nhất của anh. 💕</p>
+                <div class="scroll-indicator">
+                    <span>Kéo xuống dưới nè em</span>
+                    <svg viewBox="0 0 24 24" class="arrow-down-icon"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" fill="currentColor"/></svg>
+                </div>
+            </div>
+        </header>
+
+        <!-- ================= POLAROID GALLERY SECTION ================= -->
+        <section class="gallery-section">
+            <div class="section-decor-left">
+                <!-- Mini Kitty -->
+                <svg viewBox="0 0 100 100" class="mini-kitty-decor">
+                    <ellipse cx="50" cy="55" rx="30" ry="22" fill="#fff" stroke="#ff8da1" stroke-width="3"/>
+                    <path d="M 24 41 C 18 26, 22 15, 32 25" fill="#fff" stroke="#ff8da1" stroke-width="3"/>
+                    <path d="M 76 41 C 82 26, 78 15, 68 25" fill="#fff" stroke="#ff8da1" stroke-width="3"/>
+                    <circle cx="38" cy="53" r="2.5" fill="#2c3e50"/>
+                    <circle cx="62" cy="53" r="2.5" fill="#2c3e50"/>
+                    <ellipse cx="50" cy="60" rx="3.5" ry="2" fill="#f1c40f"/>
+                    <g transform="translate(15, 12) scale(0.6)">
+                        <circle cx="15" cy="15" r="6" fill="#ff4d6d"/>
+                        <path d="M 15 15 C 5 5, 2 20, 15 15" fill="#ff4d6d"/>
+                        <path d="M 15 15 C 25 5, 28 20, 15 15" fill="#ff4d6d"/>
+                    </g>
+                </svg>
+            </div>
+            
+            <h2 class="section-title cursive-text">Khoảnh khắc ngọt ngào</h2>
+            <p class="section-desc">Ghi lại những bước chân yêu thương, nụ cười rạng rỡ và kỷ niệm hạnh phúc của hai chúng mình.</p>
+
+            <div class="polaroid-grid">
+                <!-- Polaroid Card 1 -->
+                <div class="polaroid-card" data-index="1">
+                    <div class="tape"></div>
+                    <div class="photo-frame">
+                        <img src="z7911565714967_0c2a6633e7a034f1756a7e9829ab2bad.jpg" alt="Thùy Linh Kỷ Niệm 1" loading="lazy">
+                    </div>
+                    <div class="photo-caption">Bên em bình yên đến lạ 🌸</div>
+                </div>
+
+                <!-- Polaroid Card 2 -->
+                <div class="polaroid-card" data-index="2">
+                    <div class="tape"></div>
+                    <div class="photo-frame">
+                        <img src="z7911565717278_d54746ae4018820cccaa87d36d278a82.jpg" alt="Thùy Linh Kỷ Niệm 2" loading="lazy">
+                    </div>
+                    <div class="photo-caption">Nụ cười tỏa nắng của em ☀️</div>
+                </div>
+
+                <!-- Polaroid Card 3 -->
+                <div class="polaroid-card" data-index="3">
+                    <div class="tape"></div>
+                    <div class="photo-frame">
+                        <img src="z7911565720664_e85d7c885bed899aceb31cf588b81cc1.jpg" alt="Thùy Linh Kỷ Niệm 3" loading="lazy">
+                    </div>
+                    <div class="photo-caption">Công chúa nhỏ của anh 👑</div>
+                </div>
+
+                <!-- Polaroid Card 4 -->
+                <div class="polaroid-card" data-index="4">
+                    <div class="tape"></div>
+                    <div class="photo-frame">
+                        <img src="z7911565728732_77fb21d63bab2363fdc9b47dba962d3a.jpg" alt="Thùy Linh Kỷ Niệm 4" loading="lazy">
+                    </div>
+                    <div class="photo-caption">Những buổi hẹn hò ngọt ngào 💕</div>
+                </div>
+
+                <!-- Polaroid Card 5 -->
+                <div class="polaroid-card" data-index="5">
+                    <div class="tape"></div>
+                    <div class="photo-frame">
+                        <img src="z7911565732591_b9fc3f3f5ef4c8be576ac471b0267f10.jpg" alt="Thùy Linh Kỷ Niệm 5" loading="lazy">
+                    </div>
+                    <div class="photo-caption">Ánh mắt làm tim anh thổn thức ✨</div>
+                </div>
+
+                <!-- Polaroid Card 6 -->
+                <div class="polaroid-card" data-index="6">
+                    <div class="tape"></div>
+                    <div class="photo-frame">
+                        <img src="z7911565737961_db18015e872fcfbe16e0608b5ea39f4e.jpg" alt="Thùy Linh Kỷ Niệm 6" loading="lazy">
+                    </div>
+                    <div class="photo-caption">Đáng yêu không ai bằng luôn! 🥰</div>
+                </div>
+
+                <!-- Polaroid Card 7 -->
+                <div class="polaroid-card" data-index="7">
+                    <div class="tape"></div>
+                    <div class="photo-frame">
+                        <img src="z7911565739319_74c674deaeceda1707f26df1133cf510.jpg" alt="Thùy Linh Kỷ Niệm 7" loading="lazy">
+                    </div>
+                    <div class="photo-caption">Mỗi giây phút đều trân quý 🕰️</div>
+                </div>
+
+                <!-- Polaroid Card 8 -->
+                <div class="polaroid-card" data-index="8">
+                    <div class="tape"></div>
+                    <div class="photo-frame">
+                        <img src="z7911565743100_3ba3e6567f25cac6b764ee9c58d75259.jpg" alt="Thùy Linh Kỷ Niệm 8" loading="lazy">
+                    </div>
+                    <div class="photo-caption">Nắm tay anh đi khắp thế gian 🤝</div>
+                </div>
+
+                <!-- Polaroid Card 9 -->
+                <div class="polaroid-card" data-index="9">
+                    <div class="tape"></div>
+                    <div class="photo-frame">
+                        <img src="z7911565746618_0d3d4819cec589f5a9eb7e16d7570c16.jpg" alt="Thùy Linh Kỷ Niệm 9" loading="lazy">
+                    </div>
+                    <div class="photo-caption">Bức ảnh dễ thương xỉu úp úp 🐱</div>
+                </div>
+
+                <!-- Polaroid Card 10 -->
+                <div class="polaroid-card" data-index="10">
+                    <div class="tape"></div>
+                    <div class="photo-frame">
+                        <img src="z7911565748788_dd3b878ae8fc1e400238ed8cee13e5eb.jpg" alt="Thùy Linh Kỷ Niệm 10" loading="lazy">
+                    </div>
+                    <div class="photo-caption">Yêu em hơn cả bầu trời ☁️💖</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= LOVE LETTER SECTION ================= -->
+        <section class="letter-section">
+            <div class="letter-box">
+                <div class="letter-paper">
+                    <!-- Top Ribbon & Kitty Mascot -->
+                    <div class="letter-header-kitty">
+                        <svg viewBox="0 0 100 100" class="letter-kitty-svg">
+                            <ellipse cx="50" cy="55" rx="28" ry="20" fill="#ffffff" stroke="#ff8da1" stroke-width="2.5" />
+                            <path d="M 24 42 C 18 28, 22 17, 32 26" fill="#ffffff" stroke="#ff8da1" stroke-width="2.5" />
+                            <path d="M 76 42 C 82 28, 78 17, 68 26" fill="#ffffff" stroke="#ff8da1" stroke-width="2.5" />
+                            <g transform="translate(18, 16) scale(0.6)">
+                                <circle cx="15" cy="15" r="5" fill="#ff4d6d" />
+                                <path d="M 15 15 C 5 5, 2 20, 15 15" fill="#ff4d6d" />
+                                <path d="M 15 15 C 25 5, 28 20, 15 15" fill="#ff4d6d" />
+                            </g>
+                            <circle cx="40" cy="53" r="2.5" fill="#2d3748" />
+                            <circle cx="60" cy="53" r="2.5" fill="#2d3748" />
+                            <ellipse cx="50" cy="59" rx="2.5" ry="1.5" fill="#ffd166" />
+                        </svg>
+                        <h3 class="cursive-text">Gửi Thuỳ Linh Bé Bỏng...</h3>
+                    </div>
+                    <div class="letter-content-text">
+                        <!-- Custom typing animation inside this element -->
+                        <p id="typing-text-area"></p>
+                        <span class="cursor" id="typing-cursor">|</span>
+                    </div>
+                    <div class="letter-signature">
+                        <p class="cursive-text">Yêu em thật nhiều,</p>
+                        <p class="sender-name">Anh của em 💖</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= QUESTION & INTERACTIVE SECTION ================= -->
+        <section class="question-section">
+            <div class="question-box">
+                <div class="kitty-icon-bounce">
+                    <svg viewBox="0 0 120 120" class="kitty-ask-svg">
+                        <ellipse cx="60" cy="65" rx="34" ry="25" fill="#ffffff" stroke="#ff8da1" stroke-width="3" />
+                        <path d="M 29 49 C 22 32, 26 20, 38 31" fill="#ffffff" stroke="#ff8da1" stroke-width="3" />
+                        <path d="M 91 49 C 98 32, 94 20, 82 31" fill="#ffffff" stroke="#ff8da1" stroke-width="3" />
+                        <g transform="translate(22, 20) scale(0.7)">
+                            <circle cx="15" cy="15" r="6" fill="#ff4d6d" />
+                            <path d="M 15 15 C 5 5, 2 20, 15 15" fill="#ff4d6d" />
+                            <path d="M 15 15 C 25 5, 28 20, 15 15" fill="#ff4d6d" />
+                        </g>
+                        <circle cx="48" cy="62" r="3" fill="#2d3748" />
+                        <circle cx="72" cy="62" r="3" fill="#2d3748" />
+                        <ellipse cx="60" cy="70" rx="3" ry="2" fill="#ffd166" />
+                        <!-- Blushing -->
+                        <ellipse cx="40" cy="69" rx="4" ry="2" fill="#ffb6c1" />
+                        <ellipse cx="80" cy="69" rx="4" ry="2" fill="#ffb6c1" />
+                    </svg>
+                </div>
+                <h3 class="ask-title">Thùy Linh ơi...</h3>
+                <p class="ask-text">Em có đồng ý bên anh, cùng anh đi hết những chặng đường phía trước không? 🥺💖</p>
+                <div class="answer-buttons">
+                    <button class="ans-btn" id="yes-btn">Dạ đồng ý chứ ạ! 🥰</button>
+                    <button class="ans-btn" id="no-btn">Ứ thèm đâu nha 😜</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Made with 💖 by your boyfriend | Theme Hello Kitty 🐱🎀</p>
+        </footer>
+    </div>
+
+    <!-- ================= CELEBRATION MODAL ================= -->
+    <div id="success-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="modal-kitty">
+                <!-- Hello Kitty with Heart SVG -->
+                <svg viewBox="0 0 100 100" class="kitty-success-svg">
+                    <ellipse cx="50" cy="45" rx="28" ry="20" fill="#ffffff" stroke="#ff8da1" stroke-width="2.5" />
+                    <path d="M 24 32 C 18 18, 22 7, 32 16" fill="#ffffff" stroke="#ff8da1" stroke-width="2.5" />
+                    <path d="M 76 32 C 82 18, 78 7, 68 16" fill="#ffffff" stroke="#ff8da1" stroke-width="2.5" />
+                    <g transform="translate(18, 6) scale(0.6)">
+                        <circle cx="15" cy="15" r="5" fill="#ff4d6d" />
+                        <path d="M 15 15 C 5 5, 2 20, 15 15" fill="#ff4d6d" />
+                        <path d="M 15 15 C 25 5, 28 20, 15 15" fill="#ff4d6d" />
+                    </g>
+                    <circle cx="40" cy="43" r="2.5" fill="#2d3748" />
+                    <circle cx="60" cy="43" r="2.5" fill="#2d3748" />
+                    <ellipse cx="50" cy="49" rx="2.5" ry="1.5" fill="#ffd166" />
+                    <!-- Big Pink Heart in Hands -->
+                    <path d="M 50 63 C 40 45, 20 55, 50 85 C 80 55, 60 45, 50 63 Z" fill="#ff4d6d" stroke="#fff" stroke-width="2" />
+                </svg>
+            </div>
+            <h2 class="cursive-text">Aww, anh biết mà! 🥰</h2>
+            <p>Cảm ơn em vì đã đồng ý yêu thương anh. Anh hứa sẽ luôn chăm sóc, cưng chiều và yêu thương cô bé Hello Kitty Thùy Linh này suốt đời! 💖🎀</p>
+            <p class="sweet-kiss">Moahhh! 💋😘</p>
+            <button class="close-modal-btn" id="close-modal-btn">Chạm vào đây để ôm anh một cái 🫂</button>
+        </div>
+    </div>
+
+    <!-- Script file -->
+    <script src="script.js"></script>
+</body>
+</html>
