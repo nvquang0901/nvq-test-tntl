@@ -97,14 +97,35 @@
                     </button>
                 </div>
             </div>
-            <!-- Audio Tag (pointing to a sweet lofi love track) -->
-            <audio id="bg-music" loop>
-                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+            <!-- Audio Tag — phát file nhạc trong thư mục (đặt tên: music.mp3 / music.m4a / music.ogg).
+                 Nếu chưa có file, trang tự phát hộp nhạc piano tổng hợp thay thế. -->
+            <audio id="bg-music" loop preload="auto">
+                <source src="music.mp3" type="audio/mpeg">
+                <source src="music.m4a" type="audio/mp4">
+                <source src="music.ogg" type="audio/ogg">
             </audio>
         </div>
 
         <!-- ================= HERO SECTION (LOVE CLOCK) ================= -->
         <header class="hero">
+            <!-- Cuốn phim kỷ niệm: 2 ảnh nằm trong dải film có lỗ phim -->
+            <div class="film-strip-wrap reveal">
+                <div class="film-strip">
+                    <div class="film-holes film-holes-top"></div>
+                    <div class="film-frame">
+                        <img src="z7911565748788_dd3b878ae8fc1e400238ed8cee13e5eb.jpg" alt="Yêu em hơn cả bầu trời ☁️" loading="lazy">
+                    </div>
+                    <div class="film-frame">
+                        <img src="film3.jpg" alt="Lễ hội bên nhau 🎀" loading="lazy">
+                    </div>
+                    <div class="film-frame">
+                        <img src="film4.jpg" alt="Chu môi đáng yêu 😚" loading="lazy">
+                    </div>
+                    <div class="film-holes film-holes-bottom"></div>
+                </div>
+                <p class="film-caption cursive-text">Cuốn phim của chúng mình 🎞️💕</p>
+            </div>
+
             <div class="hello-kitty-top-decor">
                 <!-- Hello Kitty Bow SVG -->
                 <svg viewBox="0 0 100 60" class="kitty-bow-top">
@@ -113,11 +134,11 @@
                     <path d="M 50 30 C 75 10, 85 45, 50 30" fill="#ff4d6d" stroke="#fff" stroke-width="3"/>
                 </svg>
             </div>
-            <h2 class="love-subtitle">Chào mừng công chúa nhỏ Trần Nguyễn Thuỳ Linh 💖</h2>
-            <h1 class="love-title">Chúng Mình Đã Bên Nhau</h1>
+            <h2 class="love-subtitle reveal">Chào mừng công chúa nhỏ Trần Nguyễn Thuỳ Linh 💖</h2>
+            <h1 class="love-title reveal delay-1">Chúng Mình Đã Bên Nhau</h1>
 
             <!-- Love Timer Clock -->
-            <div class="love-clock-container">
+            <div class="love-clock-container reveal delay-2">
                 <div class="clock-card">
                     <span id="days" class="clock-num">00</span>
                     <span class="clock-label">Ngày</span>
@@ -139,7 +160,38 @@
                 </div>
             </div>
 
-            <div class="love-footer-text">
+            <!-- 3 ảnh gim cân đối ngay dưới đồng hồ đếm ngày -->
+            <div class="hero-scatter reveal delay-2">
+                <div class="photo-float sc-1">
+                    <div class="polaroid-card">
+                        <div class="tape"></div>
+                        <div class="photo-frame">
+                            <img src="flower.jpg" alt="Ngày anh hoàn thành mục tiêu 4 năm 🎯" loading="lazy">
+                        </div>
+                        <div class="photo-caption">Ngày anh hoàn thành mục tiêu 4 năm 🎯</div>
+                    </div>
+                </div>
+                <div class="photo-float sc-2">
+                    <div class="polaroid-card">
+                        <div class="tape"></div>
+                        <div class="photo-frame">
+                            <img src="scatter2.jpg" alt="El Clásico ⚽" loading="lazy">
+                        </div>
+                        <div class="photo-caption">El Clásico ⚽</div>
+                    </div>
+                </div>
+                <div class="photo-float sc-3">
+                    <div class="polaroid-card">
+                        <div class="tape"></div>
+                        <div class="photo-frame">
+                            <img src="scatter3.jpg" alt="Hoá ra giống nhau 😆" loading="lazy">
+                        </div>
+                        <div class="photo-caption">Hoá ra giống nhau 😆</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="love-footer-text reveal delay-3">
                 <p>Mỗi một giây trôi qua bên em đều là những khoảnh khắc tuyệt vời nhất của anh. 💕</p>
                 <div class="scroll-indicator">
                     <span>Kéo xuống dưới nè em</span>
@@ -167,10 +219,10 @@
                 </svg>
             </div>
             
-            <h2 class="section-title cursive-text">Khoảnh khắc ngọt ngào</h2>
-            <p class="section-desc">Ghi lại những bước chân yêu thương, nụ cười rạng rỡ và kỷ niệm hạnh phúc của hai chúng mình.</p>
+            <h2 class="section-title cursive-text reveal">Khoảnh khắc ngọt ngào</h2>
+            <p class="section-desc reveal delay-1">Ghi lại những bước chân yêu thương, nụ cười rạng rỡ và kỷ niệm hạnh phúc của hai chúng mình.</p>
 
-            <div class="polaroid-grid">
+            <div class="polaroid-grid reveal delay-2">
                 <!-- Polaroid Card 1 -->
                 <div class="polaroid-card" data-index="1">
                     <div class="tape"></div>
@@ -224,48 +276,91 @@
                     </div>
                     <div class="photo-caption">Đáng yêu không ai bằng luôn! 🥰</div>
                 </div>
+            </div>
+        </section>
 
-                <!-- Polaroid Card 7 -->
-                <div class="polaroid-card" data-index="7">
-                    <div class="tape"></div>
-                    <div class="photo-frame">
-                        <img src="z7911565739319_74c674deaeceda1707f26df1133cf510.jpg" alt="Thùy Linh Kỷ Niệm 7" loading="lazy">
+        <!-- ================= LOVE STORY TIMELINE ================= -->
+        <!-- 👉 Bạn sửa NGÀY và NỘI DUNG từng mốc bên dưới cho đúng chuyện của hai bạn nhé -->
+        <section class="timeline-section">
+            <h2 class="section-title cursive-text reveal">Chuyện tình của mình</h2>
+            <p class="section-desc reveal delay-1">Từng cột mốc nhỏ ghép lại thành cả một bầu trời thương nhớ 💞</p>
+
+            <div class="timeline">
+                <div class="tl-item reveal">
+                    <div class="tl-dot"></div>
+                    <div class="tl-card">
+                        <span class="tl-date">22 · 12 · 2022</span>
+                        <h3 class="tl-title">Ngày đầu gặp em</h3>
+                        <p class="tl-text">Khoảnh khắc anh nhìn thấy em lần đầu, tim anh đã lỡ một nhịp. Cả thế giới như chỉ còn mình em. 🌸</p>
                     </div>
-                    <div class="photo-caption">Mỗi giây phút đều trân quý 🕰️</div>
                 </div>
 
-                <!-- Polaroid Card 8 -->
-                <div class="polaroid-card" data-index="8">
-                    <div class="tape"></div>
-                    <div class="photo-frame">
-                        <img src="z7911565743100_3ba3e6567f25cac6b764ee9c58d75259.jpg" alt="Thùy Linh Kỷ Niệm 8" loading="lazy">
+                <div class="tl-item reveal">
+                    <div class="tl-dot"></div>
+                    <div class="tl-card">
+                        <span class="tl-date">26 · 01 · 2023</span>
+                        <h3 class="tl-title">Lần đầu hẹn hò</h3>
+                        <p class="tl-text">Buổi hẹn đầu tiên ngại ngùng mà ngọt ngào. Anh nhớ mãi nụ cười của em hôm ấy. ☕💕</p>
                     </div>
-                    <div class="photo-caption">Nắm tay anh đi khắp thế gian 🤝</div>
                 </div>
 
-                <!-- Polaroid Card 9 -->
-                <div class="polaroid-card" data-index="9">
-                    <div class="tape"></div>
-                    <div class="photo-frame">
-                        <img src="z7911565746618_0d3d4819cec589f5a9eb7e16d7570c16.jpg" alt="Thùy Linh Kỷ Niệm 9" loading="lazy">
+                <div class="tl-item reveal">
+                    <div class="tl-dot"></div>
+                    <div class="tl-card">
+                        <img class="tl-photo" src="tl1.jpg" alt="Bức ảnh đầu tiên của hai đứa" loading="lazy">
+                        <span class="tl-date">10 · 12 · 2023</span>
+                        <h3 class="tl-title">Bức ảnh đầu tiên</h3>
+                        <p class="tl-text">Tấm hình đầu tiên của chúng mình — ngố ngố mà thương ơi là thương. 🐶🎀</p>
                     </div>
-                    <div class="photo-caption">Bức ảnh dễ thương xỉu úp úp 🐱</div>
                 </div>
 
-                <!-- Polaroid Card 10 -->
-                <div class="polaroid-card" data-index="10">
-                    <div class="tape"></div>
-                    <div class="photo-frame">
-                        <img src="z7911565748788_dd3b878ae8fc1e400238ed8cee13e5eb.jpg" alt="Thùy Linh Kỷ Niệm 10" loading="lazy">
+                <div class="tl-item reveal">
+                    <div class="tl-dot"></div>
+                    <div class="tl-card">
+                        <img class="tl-photo" src="tl2.jpg" alt="Ngày mình thành đôi" loading="lazy">
+                        <span class="tl-date">14 · 02 · 2024</span>
+                        <h3 class="tl-title">Ngày mình thành đôi</h3>
+                        <p class="tl-text">Đúng ngày Valentine, em gật đầu đồng ý — và anh có em, món quà quý giá nhất đời. 💍🎀</p>
                     </div>
-                    <div class="photo-caption">Yêu em hơn cả bầu trời ☁️💖</div>
+                </div>
+
+                <div class="tl-item reveal">
+                    <div class="tl-dot"></div>
+                    <div class="tl-card">
+                        <img class="tl-photo" src="tl3.jpg" alt="Kỉ niệm đầu tiên của hai đứa" loading="lazy">
+                        <span class="tl-date">14 · 04 · 2024</span>
+                        <h3 class="tl-title">Kỉ niệm đầu tiên</h3>
+                        <p class="tl-text">Hai tháng bên nhau — buổi hẹn ngọt ngào dưới ánh đèn, anh chỉ muốn thời gian dừng lại. 🌿💛</p>
+                    </div>
+                </div>
+
+                <div class="tl-item reveal">
+                    <div class="tl-dot"></div>
+                    <div class="tl-card">
+                        <img class="tl-photo" src="tl4.jpg" alt="Những ngày hạnh phúc phía trước" loading="lazy">
+                        <span class="tl-date">Mãi mãi về sau</span>
+                        <h3 class="tl-title">Và những ngày phía trước…</h3>
+                        <p class="tl-text">Còn thật nhiều khoảnh khắc đang chờ hai đứa cùng viết tiếp. Anh yêu em, hôm nay và mãi mãi. 💖♾️</p>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- ================= LOVE LETTER SECTION ================= -->
         <section class="letter-section">
-            <div class="letter-box">
+          <div class="split-layout">
+            <!-- Ảnh bên TRÁI lá thư -->
+            <div class="photo-float">
+                <div class="polaroid-card">
+                    <div class="tape"></div>
+                    <div class="photo-frame">
+                        <img src="z7911565739319_74c674deaeceda1707f26df1133cf510.jpg" alt="Em tự tay cắm hoa 🌷" loading="lazy">
+                    </div>
+                    <div class="photo-caption">Khéo tay ghê 🌷</div>
+                </div>
+            </div>
+
+            <div class="letter-box reveal">
                 <div class="letter-paper">
                     <!-- Top Ribbon & Kitty Mascot -->
                     <div class="letter-header-kitty">
@@ -295,11 +390,35 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Ảnh bên PHẢI lá thư -->
+            <div class="photo-float">
+                <div class="polaroid-card">
+                    <div class="tape"></div>
+                    <div class="photo-frame">
+                        <img src="z7911565743100_3ba3e6567f25cac6b764ee9c58d75259.jpg" alt="Chiến thắng cùng anh 🏆" loading="lazy">
+                    </div>
+                    <div class="photo-caption">Chiến thắng cùng anh 🏆</div>
+                </div>
+            </div>
+          </div>
         </section>
 
         <!-- ================= QUESTION & INTERACTIVE SECTION ================= -->
         <section class="question-section">
-            <div class="question-box">
+          <div class="split-layout reverse">
+            <!-- Scrapbook photo (cột bên) -->
+            <div class="photo-float">
+                <div class="polaroid-card">
+                    <div class="tape"></div>
+                    <div class="photo-frame">
+                        <img src="z7911565746618_0d3d4819cec589f5a9eb7e16d7570c16.jpg" alt="Thùy Linh Kỷ Niệm 9" loading="lazy">
+                    </div>
+                    <div class="photo-caption">Dễ thương xỉu up up 🐱</div>
+                </div>
+            </div>
+
+            <div class="question-box reveal">
                 <div class="kitty-icon-bounce">
                     <svg viewBox="0 0 120 120" class="kitty-ask-svg">
                         <ellipse cx="60" cy="65" rx="34" ry="25" fill="#ffffff" stroke="#ff8da1" stroke-width="3" />
@@ -325,6 +444,7 @@
                     <button class="ans-btn" id="no-btn">Ứ thèm đâu nha 😜</button>
                 </div>
             </div>
+          </div>
         </section>
 
         <!-- Footer -->
@@ -336,6 +456,10 @@
     <!-- ================= CELEBRATION MODAL ================= -->
     <div id="success-modal" class="modal-overlay hidden">
         <div class="modal-content">
+            <!-- Tim bay lãng mạn trong modal -->
+            <div class="modal-hearts" aria-hidden="true">
+                <span>💗</span><span>💖</span><span>🌸</span><span>💕</span><span>💞</span><span>🎀</span><span>💗</span><span>🌷</span>
+            </div>
             <div class="modal-kitty">
                 <!-- Hello Kitty with Heart SVG -->
                 <svg viewBox="0 0 100 100" class="kitty-success-svg">
@@ -355,9 +479,28 @@
                 </svg>
             </div>
             <h2 class="cursive-text">Aww, anh biết mà! 🥰</h2>
+
+            <!-- Ảnh hôn của anh + hiệu ứng nụ hôn -->
+            <div class="modal-photo">
+                <div class="modal-photo-ring"></div>
+                <img src="kiss.jpg" alt="Chụt em một cái nè 😘" loading="lazy">
+                <span class="kiss-stamp">💋</span>
+            </div>
+
             <p>Cảm ơn em vì đã đồng ý yêu thương anh. Anh hứa sẽ luôn chăm sóc, cưng chiều và yêu thương cô bé Hello Kitty Thùy Linh này suốt đời! 💖🎀</p>
             <p class="sweet-kiss">Moahhh! 💋😘</p>
             <button class="close-modal-btn" id="close-modal-btn">Chạm vào đây để ôm anh một cái 🫂</button>
+        </div>
+    </div>
+
+    <!-- ================= PHOTO LIGHTBOX ================= -->
+    <div id="lightbox" class="lightbox" aria-hidden="true">
+        <div class="lightbox-stage">
+            <button class="lightbox-close" id="lightbox-close" aria-label="Đóng">&times;</button>
+            <button class="lightbox-nav lightbox-prev" id="lightbox-prev" aria-label="Ảnh trước">&#10094;</button>
+            <img class="lightbox-img" id="lightbox-img" src="" alt="Ảnh kỷ niệm phóng to">
+            <button class="lightbox-nav lightbox-next" id="lightbox-next" aria-label="Ảnh sau">&#10095;</button>
+            <p class="lightbox-caption" id="lightbox-caption"></p>
         </div>
     </div>
 

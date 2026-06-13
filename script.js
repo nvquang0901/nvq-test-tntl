@@ -340,7 +340,9 @@ document.addEventListener("DOMContentLoaded", () => {
     
     let hearts = [];
     let particles = [];
+    let petals = [];
     const colors = ["#ff4d6d", "#ff758f", "#ff8da1", "#ffb3c1", "#ffccd5", "#ff8da1"];
+    const petalColors = ["#ffd6e0", "#ffc2d4", "#ffb3c8", "#ffe0ec", "#ffc8dd"];
 
     function resizeCanvas() {
         canvas.width = window.innerWidth;
@@ -438,6 +440,54 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    // Cánh hoa rơi nhẹ nhàng (sakura) bay xuống, đung đưa qua lại
+    class Petal {
+        constructor() { this.reset(true); }
+
+        reset(initial) {
+            this.x = Math.random() * canvas.width;
+            this.y = initial ? Math.random() * canvas.height : -20 - Math.random() * 60;
+            this.size = Math.random() * 7 + 6;
+            this.speedY = Math.random() * 0.9 + 0.5;
+            this.swayAmp = Math.random() * 1.6 + 0.6;
+            this.swayAngle = Math.random() * Math.PI * 2;
+            this.swaySpeed = Math.random() * 0.02 + 0.01;
+            this.spin = Math.random() * 0.04 - 0.02;
+            this.angle = Math.random() * Math.PI * 2;
+            this.opacity = Math.random() * 0.4 + 0.45;
+            this.color = petalColors[Math.floor(Math.random() * petalColors.length)];
+        }
+
+        update() {
+            this.y += this.speedY;
+            this.swayAngle += this.swaySpeed;
+            this.x += Math.sin(this.swayAngle) * this.swayAmp * 0.5;
+            this.angle += this.spin;
+            if (this.y > canvas.height + 30) this.reset(false);
+        }
+
+        draw() {
+            ctx.save();
+            ctx.globalAlpha = this.opacity;
+            ctx.fillStyle = this.color;
+            ctx.translate(this.x, this.y);
+            ctx.rotate(this.angle);
+            // Hình cánh hoa (2 đường cong bezier tạo dáng giọt mềm)
+            ctx.beginPath();
+            ctx.moveTo(0, -this.size);
+            ctx.bezierCurveTo(this.size * 0.7, -this.size * 0.6, this.size * 0.6, this.size * 0.6, 0, this.size);
+            ctx.bezierCurveTo(-this.size * 0.6, this.size * 0.6, -this.size * 0.7, -this.size * 0.6, 0, -this.size);
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+        }
+    }
+
+    function initPetals() {
+        const count = Math.min(28, Math.floor(window.innerWidth / 45));
+        for (let i = 0; i < count; i++) petals.push(new Petal());
+    }
+
     // Khởi tạo các trái tim nền
     function initHearts() {
         const heartCount = Math.min(45, Math.floor(window.innerWidth / 30));
@@ -486,6 +536,12 @@ document.addEventListener("DOMContentLoaded", () => {
             hearts[i].draw();
         }
 
+        // Vẽ cánh hoa rơi nhẹ nhàng
+        for (let i = 0; i < petals.length; i++) {
+            petals[i].update();
+            petals[i].draw();
+        }
+
         // Vẽ các hạt nhấp nháy từ chuột
         for (let i = particles.length - 1; i >= 0; i--) {
             particles[i].update();
@@ -499,6 +555,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     initHearts();
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        initPetals();
+    }
     animate();
 
     // ==========================================================================
@@ -558,43 +617,107 @@ Anh yêu em nhiều hơn cả những gì anh có thể viết ra... 💖`;
     // 8. INTERACTIVE QUESTION "RUNAWAY" BUTTON LOGIC
     // ==========================================================================
     
-    // Hàm di chuyển nút "Không" ngẫu nhiên
-    function moveNoButton() {
-        const box = document.querySelector(".question-box");
-        const boxRect = box.getBoundingClientRect();
-        const btnRect = noBtn.getBoundingClientRect();
+    const questionBox = document.querySelector(".question-box");
 
-        // Đảm bảo nút ở trạng thái absolute
+    // Né con trỏ: nút "Không" nhảy thẳng tới GÓC XA CON TRỎ NHẤT trong vùng hộp câu hỏi.
+    // Dùng toạ độ màn hình (position: fixed) nên không lệch, và luôn nằm trong tầm nhìn.
+    function dodgeNoButton(pointerX, pointerY) {
+        const box = questionBox.getBoundingClientRect();
+        const btnRect = noBtn.getBoundingClientRect();
+        const bw = btnRect.width;
+        const bh = btnRect.height;
+
+        // QUAN TRỌNG: gắn nút thẳng vào <body> để thoát khỏi thẻ kính
+        // (backdrop-filter + transform + overflow:hidden) — nếu không, position:fixed
+        // sẽ bị thẻ kính "giam" và cắt mất. Ra ngoài body thì fixed = toạ độ màn hình thật.
+        if (noBtn.parentElement !== document.body) {
+            document.body.appendChild(noBtn);
+        }
+
+        // Chuyển nút sang định vị fixed theo màn hình
         noBtn.classList.add("moving");
 
-        // Phạm vi di chuyển tối đa trong hộp câu hỏi (tránh vượt ra viền ngoài)
-        const maxX = boxRect.width - btnRect.width - 30;
-        const maxY = boxRect.height - btnRect.height - 30;
+        // Vùng cho phép (toạ độ màn hình): trải rộng theo bề ngang hộp, ở dải phía dưới
+        // -> nút có thể nhảy sang tận mép trái/phải, thật xa con trỏ, mà không che tiêu đề.
+        const margin = 14;
+        const left0 = box.left + margin;
+        const left1 = Math.max(left0, box.right - bw - margin);
+        const top0 = box.top + box.height * 0.42;
+        const top1 = Math.max(top0, box.bottom - bh - margin);
 
-        // Tính tọa độ ngẫu nhiên
-        const randomX = Math.floor(Math.random() * maxX) + 15;
-        const randomY = Math.floor(Math.random() * maxY) + 15;
+        // Tâm con trỏ (nếu là chạm/không có con trỏ thì lấy tâm nút hiện tại)
+        const px = (typeof pointerX === "number") ? pointerX : btnRect.left + bw / 2;
+        const py = (typeof pointerY === "number") ? pointerY : btnRect.top + bh / 2;
 
-        noBtn.style.left = `${randomX}px`;
-        noBtn.style.top = `${randomY}px`;
+        // Chọn góc XA con trỏ nhất trong 4 góc của vùng -> luôn nhảy ra thật xa
+        const corners = [
+            [left0, top0], [left1, top0],
+            [left0, top1], [left1, top1]
+        ];
+        let target = corners[0];
+        let bestDist = -1;
+        for (const [cx, cy] of corners) {
+            const d = Math.hypot(cx + bw / 2 - px, cy + bh / 2 - py);
+            if (d > bestDist) { bestDist = d; target = [cx, cy]; }
+        }
 
-        // Mỗi lần chạy trốn, sinh ra vài hạt trái tim lấp lánh trêu chọc dễ thương
-        burstHearts(8, btnRect.left + btnRect.width/2, btnRect.top + btnRect.height/2);
+        // Kéo nhẹ về phía giữa một chút cho tự nhiên (không cứng nhắc dính góc)
+        const midX = (left0 + left1) / 2;
+        const midY = (top0 + top1) / 2;
+        let newLeft = target[0] + (midX - target[0]) * Math.random() * 0.4;
+        let newTop = target[1] + (midY - target[1]) * Math.random() * 0.4;
+
+        // Kẹp trong vùng an toàn (luôn thấy được)
+        newLeft = Math.max(left0, Math.min(newLeft, left1));
+        newTop = Math.max(top0, Math.min(newTop, top1));
+
+        noBtn.style.left = `${newLeft}px`;
+        noBtn.style.top = `${newTop}px`;
+
+        // Trêu chọc: thi thoảng bắn vài hạt trái tim tại chỗ nút vừa rời đi
+        if (Math.random() < 0.4) burstHearts(5, btnRect.left + bw / 2, btnRect.top + bh / 2);
     }
 
-    // Trên Desktop: di chuyển khi rê chuột vào
-    noBtn.addEventListener("mouseenter", moveNoButton);
+    // Desktop: né NGAY khi con trỏ lại gần (chưa cần chạm vào) -> không thể bấm
+    const DODGE_RADIUS = 140; // bán kính cảnh giác quanh nút (px)
+    document.addEventListener("mousemove", (e) => {
+        if (mainContent.classList.contains("hidden")) return;
+        const r = noBtn.getBoundingClientRect();
+        if (!r.width) return;
+        const cx = r.left + r.width / 2;
+        const cy = r.top + r.height / 2;
+        // Chỉ né khi nút đang nằm trong khung nhìn (tránh chạy mất trước khi cuộn tới)
+        if (cy < 0 || cy > window.innerHeight) return;
+        const d = Math.hypot(e.clientX - cx, e.clientY - cy);
+        if (d < DODGE_RADIUS) dodgeNoButton(e.clientX, e.clientY);
+    });
 
-    // Trên Điện thoại di động: di chuyển khi chạm màn hình hoặc click
+    // Phòng hờ: nếu con trỏ vẫn chạm tới thì né tiếp và chặn click
+    noBtn.addEventListener("mouseenter", (e) => dodgeNoButton(e.clientX, e.clientY));
+
+    // Điện thoại: chạm là nhảy đi, không cho bấm
     noBtn.addEventListener("touchstart", (e) => {
-        e.preventDefault(); // Tránh kích hoạt click mặc định
-        moveNoButton();
+        e.preventDefault();
+        dodgeNoButton();
     }, { passive: false });
 
     noBtn.addEventListener("click", (e) => {
         e.preventDefault();
-        moveNoButton();
+        dodgeNoButton();
     });
+
+    // Khi nút đã "thoát ra" body (fixed), ẩn nó nếu mục câu hỏi không còn trong tầm nhìn
+    // -> tránh nút lơ lửng giữa màn hình lúc cuộn qua mục khác.
+    if ("IntersectionObserver" in window) {
+        const qVisObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (noBtn.classList.contains("moving")) {
+                    noBtn.style.visibility = entry.isIntersecting ? "visible" : "hidden";
+                }
+            });
+        }, { threshold: 0.02 });
+        qVisObserver.observe(questionBox);
+    }
 
     // ==========================================================================
     // 9. CELEBRATION MODAL & CONFETTI CELEBRATION
@@ -631,8 +754,186 @@ Anh yêu em nhiều hơn cả những gì anh có thể viết ra... 💖`;
     closeModalBtn.addEventListener("click", () => {
         // Ẩn modal chúc mừng
         successModal.classList.add("hidden");
-        
+
         // Tạo thêm một cơn mưa trái tim lấp lánh nhẹ nhàng
         burstHearts(40, window.innerWidth / 2, window.innerHeight / 2);
     });
+
+    // ==========================================================================
+    // 10. SCROLL REVEAL (Các phần nội dung hiện ra mượt mà khi cuộn tới)
+    // ==========================================================================
+    const revealEls = document.querySelectorAll(".reveal");
+    if ("IntersectionObserver" in window) {
+        const revealObserver = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("is-visible");
+                    obs.unobserve(entry.target); // Chỉ chạy 1 lần cho mỗi phần tử
+                }
+            });
+        }, { threshold: 0.15, rootMargin: "0px 0px -60px 0px" });
+
+        revealEls.forEach(el => revealObserver.observe(el));
+    } else {
+        // Trình duyệt quá cũ thì hiện luôn, không ẩn
+        revealEls.forEach(el => el.classList.add("is-visible"));
+    }
+
+    // ==========================================================================
+    // 11. PHOTO LIGHTBOX (Bấm vào ảnh polaroid để xem phóng to + lướt qua lại)
+    // ==========================================================================
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightbox-img");
+    const lightboxCaption = document.getElementById("lightbox-caption");
+    const lightboxClose = document.getElementById("lightbox-close");
+    const lightboxPrev = document.getElementById("lightbox-prev");
+    const lightboxNext = document.getElementById("lightbox-next");
+    // Gồm cả polaroid lẫn ảnh trong dải film -> bấm tấm nào cũng phóng to được
+    const polaroidCards = Array.from(document.querySelectorAll(".polaroid-card, .film-frame"));
+
+    // Thu thập dữ liệu ảnh + lời chú thích từ từng tấm
+    const galleryItems = polaroidCards.map(card => {
+        const img = card.querySelector("img");
+        const cap = card.querySelector(".photo-caption");
+        return {
+            src: img ? img.getAttribute("src") : "",
+            alt: img ? img.getAttribute("alt") : "",
+            caption: cap ? cap.textContent.trim() : (img ? img.getAttribute("alt") : "")
+        };
+    });
+
+    let currentLightboxIndex = 0;
+
+    function showLightboxImage(index) {
+        // Cho phép lướt vòng tròn (qua ảnh cuối thì quay về ảnh đầu)
+        const total = galleryItems.length;
+        currentLightboxIndex = (index + total) % total;
+        const item = galleryItems[currentLightboxIndex];
+        lightboxImg.src = item.src;
+        lightboxImg.alt = item.alt;
+        lightboxCaption.textContent = item.caption;
+    }
+
+    function openLightbox(index) {
+        showLightboxImage(index);
+        lightbox.classList.add("open");
+        lightbox.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden"; // Khoá cuộn nền khi đang xem ảnh
+    }
+
+    function closeLightbox() {
+        lightbox.classList.remove("open");
+        lightbox.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+    }
+
+    polaroidCards.forEach((card, i) => {
+        card.addEventListener("click", () => openLightbox(i));
+    });
+
+    lightboxClose.addEventListener("click", closeLightbox);
+    lightboxPrev.addEventListener("click", () => showLightboxImage(currentLightboxIndex - 1));
+    lightboxNext.addEventListener("click", () => showLightboxImage(currentLightboxIndex + 1));
+
+    // Bấm ra vùng nền tối để đóng
+    lightbox.addEventListener("click", (e) => {
+        if (e.target === lightbox) closeLightbox();
+    });
+
+    // Điều khiển bằng bàn phím: Esc đóng, mũi tên trái/phải để lướt
+    document.addEventListener("keydown", (e) => {
+        if (!lightbox.classList.contains("open")) return;
+        if (e.key === "Escape") closeLightbox();
+        else if (e.key === "ArrowLeft") showLightboxImage(currentLightboxIndex - 1);
+        else if (e.key === "ArrowRight") showLightboxImage(currentLightboxIndex + 1);
+    });
+
+    // ==========================================================================
+    // 12. RẢI ẢNH NGẪU NHIÊN (tự nhiên, thoải mái như scrapbook thật)
+    //    Mỗi lần mở trang, mỗi tấm có góc nghiêng + băng dính lệch + màu băng khác nhau.
+    // ==========================================================================
+    function scatterPhotos() {
+        const tapeColors = [
+            "rgba(255, 182, 193, 0.62)", // hồng phấn
+            "rgba(255, 209, 102, 0.55)", // vàng kem
+            "rgba(214, 184, 255, 0.52)", // tím lavender
+            "rgba(255, 159, 191, 0.55)", // hồng đào
+            "rgba(178, 223, 219, 0.5)"   // xanh mint nhạt
+        ];
+        const rand = (min, max) => Math.random() * (max - min) + min;
+
+        document.querySelectorAll(".polaroid-card").forEach((card) => {
+            // Góc nghiêng -5°..+5° (qua biến --tilt để hover vẫn về thẳng được)
+            card.style.setProperty("--tilt", `${rand(-5, 5).toFixed(2)}deg`);
+
+            const tape = card.querySelector(".tape");
+            if (tape) {
+                tape.style.transform = `translateX(-50%) rotate(${rand(-9, 9).toFixed(1)}deg)`;
+                tape.style.backgroundColor = tapeColors[Math.floor(Math.random() * tapeColors.length)];
+                // Lệch ngang một chút cho tự nhiên
+                tape.style.left = `${rand(38, 62).toFixed(0)}%`;
+            }
+        });
+
+        // Ảnh thả góc (scrapbook) bồng bềnh lệch pha nhau cho sống động
+        document.querySelectorAll(".photo-float").forEach((pf) => {
+            pf.style.animationDelay = `${rand(0, 2.5).toFixed(2)}s`;
+            pf.style.animationDuration = `${rand(5.5, 7.5).toFixed(2)}s`;
+        });
+
+        // Ảnh ở mục thư & câu hỏi: gim XEN KẼ trái/phải (zigzag) cho tự nhiên như gim ảnh thật.
+        // Bắt đầu lệch bên nào thì ngẫu nhiên, nhưng sau đó luôn so le: trái -> phải -> trái...
+        const startLeft = Math.random() < 0.5;
+        document.querySelectorAll(".split-layout > .photo-float").forEach((pf, i) => {
+            const leanLeft = startLeft ? (i % 2 === 0) : (i % 2 === 1);
+            pf.classList.remove("pin-left", "pin-right");
+            pf.classList.add(leanLeft ? "pin-left" : "pin-right");
+            // Nghiêng theo đúng hướng lệch cho giống ảnh được gim hờ một góc
+            const card = pf.querySelector(".polaroid-card");
+            if (card) {
+                const deg = (leanLeft ? -1 : 1) * rand(3, 7);
+                card.style.setProperty("--tilt", `${deg.toFixed(2)}deg`);
+            }
+        });
+    }
+    scatterPhotos();
+
+    // ==========================================================================
+    // 13. HIỆU ỨNG NGHIÊNG 3D THEO CON TRỎ (interactive 3D tilt)
+    //    Di chuột lên ảnh/thẻ -> nó nghiêng theo con trỏ tạo chiều sâu 3D.
+    // ==========================================================================
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const canHover = window.matchMedia("(hover: hover)").matches;
+
+    function setupTilt(els, maxAngle, scale) {
+        els.forEach((el) => {
+            el.addEventListener("mousemove", (e) => {
+                const r = el.getBoundingClientRect();
+                const px = (e.clientX - r.left) / r.width - 0.5;   // -0.5..0.5
+                const py = (e.clientY - r.top) / r.height - 0.5;
+                el.style.transition = "transform 0.08s linear";
+                el.style.transform =
+                    `perspective(800px) rotateX(${(-py * maxAngle).toFixed(2)}deg) ` +
+                    `rotateY(${(px * maxAngle).toFixed(2)}deg) scale(${scale})`;
+                el.style.zIndex = "130";
+                // Tạm dừng bồng bềnh của ảnh thả góc để không bị giật khi đang nghiêng
+                const pf = el.closest(".photo-float");
+                if (pf) pf.style.animationPlayState = "paused";
+            });
+            el.addEventListener("mouseleave", () => {
+                el.style.transition = "transform 0.55s var(--ease-soft)";
+                el.style.transform = "";
+                el.style.zIndex = "";
+                const pf = el.closest(".photo-float");
+                if (pf) pf.style.animationPlayState = "";
+            });
+        });
+    }
+
+    if (!reduceMotion && canHover) {
+        setupTilt(document.querySelectorAll(".polaroid-card"), 16, 1.06);
+        setupTilt(document.querySelectorAll(".clock-card"), 18, 1.05);
+        setupTilt(document.querySelectorAll(".film-strip"), 10, 1.03);
+        setupTilt(document.querySelectorAll(".letter-box, .question-box"), 5, 1.0);
+    }
 });

@@ -6,19 +6,36 @@
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Quicksand:wght@400;500;600;700&family=Sacramento&display=swap');
 
 :root {
-    --pink-bg: #fff0f3;
+    --pink-bg: #fff5f7;
     --pink-light: #ffe5ec;
     --pink-accent: #ffb5a7;
     --pink-sweet: #ff8da1;
-    --pink-hot: #ff4d6d;
+    --pink-hot: #ff5d8f;
     --pink-dark: #c9184a;
+    --pink-rose: #ffd0dd;
+    --lavender: #f3e6ff;
+    --peach: #ffe8d6;
     --kitty-yellow: #ffd166;
     --white: #ffffff;
-    --dark-text: #4a5568;
-    --glass-bg: rgba(255, 255, 255, 0.7);
-    --glass-border: rgba(255, 141, 161, 0.3);
-    --shadow-soft: 0 10px 30px rgba(255, 77, 109, 0.15);
-    --shadow-medium: 0 15px 40px rgba(255, 77, 109, 0.25);
+    --dark-text: #6b5560;
+    --soft-text: #9b8089;
+
+    /* Refined glass tokens */
+    --glass-bg: rgba(255, 255, 255, 0.55);
+    --glass-bg-strong: rgba(255, 255, 255, 0.72);
+    --glass-border: rgba(255, 255, 255, 0.6);
+    --glass-edge: rgba(255, 141, 161, 0.35);
+
+    /* Signature gradients */
+    --grad-romance: linear-gradient(135deg, #ff8fb1 0%, #ff5d8f 50%, #d6709e 100%);
+    --grad-title: linear-gradient(120deg, #ff5d8f 0%, #c9184a 45%, #b06ab3 100%);
+    --grad-soft: linear-gradient(135deg, #fff5f7 0%, #ffe9f1 100%);
+
+    /* Layered, soft shadows for a premium feel */
+    --shadow-soft: 0 8px 24px rgba(255, 93, 143, 0.12), 0 2px 6px rgba(201, 24, 74, 0.06);
+    --shadow-medium: 0 18px 45px rgba(255, 93, 143, 0.2), 0 6px 14px rgba(201, 24, 74, 0.08);
+    --shadow-glow: 0 0 0 1px rgba(255, 255, 255, 0.5) inset, 0 12px 35px rgba(255, 93, 143, 0.18);
+    --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* Custom Scrollbar */
@@ -56,12 +73,67 @@ body {
     position: relative;
 }
 
+/* Gentle animated aurora background — soft pink/lavender/peach glows that drift */
+body::before {
+    content: '';
+    position: fixed;
+    inset: -20%;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(38% 42% at 18% 22%, rgba(255, 173, 199, 0.55) 0%, transparent 60%),
+        radial-gradient(34% 40% at 82% 18%, rgba(214, 184, 255, 0.45) 0%, transparent 60%),
+        radial-gradient(42% 46% at 75% 80%, rgba(255, 209, 178, 0.45) 0%, transparent 62%),
+        radial-gradient(40% 44% at 25% 78%, rgba(255, 153, 184, 0.4) 0%, transparent 62%);
+    filter: blur(8px);
+    animation: aurora-drift 22s ease-in-out infinite alternate;
+}
+
 .cursive-text {
     font-family: 'Dancing Script', cursive;
 }
 
+/* Reusable gradient text — for premium titles */
+.grad-text {
+    background: var(--grad-title);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+
+/* Scroll-reveal: elements start hidden, ease in with a soft 3D lift */
+.reveal {
+    opacity: 0;
+    transform: perspective(1000px) translateY(44px) rotateX(12deg);
+    transition: opacity 0.9s var(--ease-soft), transform 0.9s var(--ease-soft);
+    will-change: opacity, transform;
+}
+.reveal.is-visible {
+    opacity: 1;
+    transform: perspective(1000px) translateY(0) rotateX(0deg);
+}
+.reveal.delay-1 { transition-delay: 0.12s; }
+.reveal.delay-2 { transition-delay: 0.24s; }
+.reveal.delay-3 { transition-delay: 0.36s; }
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    body::before { animation: none; }
+    .photo-float { animation: none !important; }
+}
+
 .hidden {
     display: none !important;
+}
+
+/* Con trỏ chuột hình trái tim 💗 (mặc định hồng nhạt, khi rê lên nút thì hồng đậm) */
+body {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 24 24'%3E%3Cpath d='M12 21s-7-4.4-9.6-8.7C.8 9.3 2.2 5.6 5.8 5.6c2.1 0 3.5 1.4 4.2 2.5.7-1.1 2.1-2.5 4.2-2.5 3.6 0 5 3.7 3.4 6.7C19 16.6 12 21 12 21z' fill='%23ff9fbf' stroke='white' stroke-width='1.4'/%3E%3C/svg%3E") 14 12, auto;
+}
+a, button, .ans-btn, .control-btn, .close-modal-btn, .scroll-indicator,
+.heart-seal-btn, .lightbox-nav, .lightbox-close {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24'%3E%3Cpath d='M12 21s-7-4.4-9.6-8.7C.8 9.3 2.2 5.6 5.8 5.6c2.1 0 3.5 1.4 4.2 2.5.7-1.1 2.1-2.5 4.2-2.5 3.6 0 5 3.7 3.4 6.7C19 16.6 12 21 12 21z' fill='%23ff4d6d' stroke='white' stroke-width='1.4'/%3E%3C/svg%3E") 16 14, pointer;
 }
 
 /* ==========================================================================
@@ -316,14 +388,15 @@ body {
     z-index: 1000;
     display: flex;
     align-items: center;
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
+    background: var(--glass-bg-strong);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
     border: 1px solid var(--glass-border);
     border-radius: 50px;
     padding: 8px 16px 8px 8px;
-    box-shadow: var(--shadow-soft);
+    box-shadow: var(--shadow-glow);
     max-width: 280px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s var(--ease-soft), box-shadow 0.3s var(--ease-soft);
     user-select: none;
 }
 
@@ -456,11 +529,18 @@ body {
 
 .love-title {
     font-family: 'Sacramento', cursive;
-    font-size: 4.5rem;
+    font-size: 5rem;
     font-weight: bold;
-    color: var(--pink-dark);
-    margin-bottom: 40px;
-    text-shadow: 2px 2px 4px rgba(255, 77, 109, 0.15);
+    margin-bottom: 26px;
+    line-height: 1.1;
+    background: linear-gradient(110deg, #ff7aa8 0%, #c9184a 35%, #b06ab3 60%, #ff7aa8 100%);
+    background-size: 220% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    filter: drop-shadow(0 4px 12px rgba(255, 93, 143, 0.25));
+    animation: shimmer 6s linear infinite;
 }
 
 /* Clock Layout */
@@ -470,34 +550,54 @@ body {
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 
 .clock-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    border: 2px solid var(--glass-border);
-    box-shadow: var(--shadow-soft);
-    border-radius: 20px;
-    width: 100px;
-    height: 110px;
+    position: relative;
+    background: var(--glass-bg-strong);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-glow);
+    border-radius: 22px;
+    width: 104px;
+    height: 116px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    transition: transform 0.4s var(--ease-soft), box-shadow 0.4s var(--ease-soft);
+}
+
+/* Soft sheen sweeping across the glass card */
+.clock-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 45%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), transparent);
+    pointer-events: none;
 }
 
 .clock-card:hover {
-    transform: translateY(-8px);
+    transform: translateY(-10px) scale(1.03);
     box-shadow: var(--shadow-medium);
 }
 
 .clock-num {
-    font-size: 2.2rem;
+    font-size: 2.4rem;
     font-weight: 700;
-    color: var(--pink-dark);
     margin-bottom: 2px;
+    background: var(--grad-title);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    font-variant-numeric: tabular-nums;
 }
 
 .clock-label {
@@ -521,7 +621,7 @@ body {
     max-width: 500px;
     font-weight: 500;
     line-height: 1.6;
-    margin-bottom: 60px;
+    margin-bottom: 30px;
 }
 
 /* Scroll Arrow Indicator */
@@ -547,7 +647,7 @@ body {
    ========================================================================== */
 .gallery-section {
     position: relative;
-    padding: 100px 20px;
+    padding: 70px 20px;
     z-index: 2;
     max-width: 1200px;
     margin: 0 auto;
@@ -568,40 +668,53 @@ body {
 
 .section-title {
     text-align: center;
-    font-size: 3.5rem;
-    color: var(--pink-dark);
+    font-size: 3.7rem;
     margin-bottom: 12px;
+    background: var(--grad-title);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    filter: drop-shadow(0 3px 10px rgba(255, 93, 143, 0.18));
 }
 
 .section-desc {
     text-align: center;
     color: var(--dark-text);
     max-width: 600px;
-    margin: 0 auto 60px;
+    margin: 0 auto 42px;
     font-size: 1.05rem;
     font-weight: 500;
     line-height: 1.6;
 }
 
-/* Polaroid Grid */
+/* Polaroid Grid — "memory wall" masonry: 6 ảnh dàn đều 3 cột, không dồn 1 chỗ */
 .polaroid-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-    padding: 20px;
+    column-count: 3;
+    column-gap: 28px;
+    padding: 20px 10px;
+    max-width: 1060px;
+    margin: 0 auto;
 }
 
 .polaroid-card {
-    background-color: var(--white);
-    padding: 18px 18px 24px 18px;
-    box-shadow: 0 10px 25px rgba(255, 77, 109, 0.08);
-    border-radius: 2px;
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+    background: linear-gradient(160deg, #ffffff 0%, #fff6f9 100%);
+    padding: 16px 16px 22px 16px;
+    box-shadow: 0 14px 30px rgba(201, 24, 74, 0.1), 0 3px 8px rgba(255, 93, 143, 0.08);
+    border-radius: 8px;
+    transition: transform 0.5s var(--ease-soft), box-shadow 0.5s var(--ease-soft);
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
-    cursor: pointer;
+    cursor: zoom-in;
+    /* Góc nghiêng ngẫu nhiên do JS gán (mặc định 0) — tự nhiên kiểu scrapbook */
+    transform: rotate(var(--tilt, 0deg));
+    /* Cần cho layout masonry nhiều cột: không cắt thẻ giữa 2 cột */
+    break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+    margin-bottom: 26px;
+    width: 100%;
 }
 
 /* Tapes at the top of Polaroids to look sticky */
@@ -617,23 +730,7 @@ body {
     z-index: 5;
 }
 
-/* Staggered random tilt styles applied via CSS */
-.polaroid-card:nth-child(even) {
-    transform: rotate(2deg);
-}
-
-.polaroid-card:nth-child(odd) {
-    transform: rotate(-2.5deg);
-}
-
-.polaroid-card:nth-child(3n) {
-    transform: rotate(1.5deg);
-}
-
-.polaroid-card:nth-child(3n) .tape {
-    transform: translateX(-50%) rotate(3deg);
-    background-color: rgba(255, 209, 102, 0.5);
-}
+/* Góc nghiêng & băng dính được JS rải ngẫu nhiên (xem scatterPhotos trong script.js) */
 
 /* Hover effects */
 .polaroid-card:hover {
@@ -646,10 +743,36 @@ body {
     width: 100%;
     aspect-ratio: 1 / 1;
     overflow: hidden;
-    background-color: #f7fafc;
-    border: 1px solid #edf2f7;
-    border-radius: 2px;
+    background-color: #fdf2f6;
+    border: 1px solid #fbe3ec;
+    border-radius: 5px;
     margin-bottom: 16px;
+    position: relative;
+}
+
+/* Subtle zoom hint that appears on hover */
+.photo-frame::after {
+    content: '🔍';
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 50%;
+    box-shadow: var(--shadow-soft);
+    opacity: 0;
+    transform: scale(0.6);
+    transition: opacity 0.35s var(--ease-soft), transform 0.35s var(--ease-soft);
+}
+
+.polaroid-card:hover .photo-frame::after {
+    opacity: 1;
+    transform: scale(1);
 }
 
 .photo-frame img {
@@ -661,6 +784,189 @@ body {
 
 .polaroid-card:hover .photo-frame img {
     transform: scale(1.08);
+}
+
+/* Tỉ lệ ảnh đa dạng -> các tấm cao thấp so le, masonry dàn đều & tự nhiên hơn */
+.polaroid-card:nth-child(4n + 1) .photo-frame { aspect-ratio: 1 / 1; }
+.polaroid-card:nth-child(4n + 2) .photo-frame { aspect-ratio: 4 / 5; }
+.polaroid-card:nth-child(4n + 3) .photo-frame { aspect-ratio: 5 / 4; }
+.polaroid-card:nth-child(4n + 4) .photo-frame { aspect-ratio: 3 / 4; }
+
+/* ----- Floating photos: ảnh polaroid dán rải rác khắp trang (scrapbook) ----- */
+.photo-float {
+    position: absolute;
+    z-index: 3;
+    width: 220px;
+    filter: drop-shadow(0 16px 30px rgba(201, 24, 74, 0.2));
+    animation: float3d 6s ease-in-out infinite;
+}
+.photo-float .polaroid-card {
+    width: 100%;
+    margin-bottom: 0;
+    cursor: zoom-in;
+}
+.photo-float .photo-caption {
+    font-size: 1.3rem;
+}
+
+/* ----- Cuốn phim kỷ niệm (film strip) ở hero ----- */
+.film-strip-wrap {
+    text-align: center;
+    margin: 0 auto 30px;
+}
+
+.film-strip {
+    position: relative;
+    display: inline-flex;
+    gap: 10px;
+    padding: 20px 12px;          /* chừa chỗ cho lỗ phim trên/dưới */
+    background: #16161c;
+    background-image: linear-gradient(160deg, #23232c 0%, #131318 100%);
+    border-radius: 8px;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.32), inset 0 0 0 1px rgba(255,255,255,0.05);
+    transform: rotate(-2.5deg);
+    transition: transform 0.5s var(--ease-soft), box-shadow 0.5s var(--ease-soft);
+}
+.film-strip:hover {
+    box-shadow: 0 26px 55px rgba(0, 0, 0, 0.4);
+}
+
+/* Hàng lỗ phim trên & dưới */
+.film-holes {
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    height: 8px;
+    background-image: repeating-linear-gradient(
+        90deg,
+        transparent 0 7px,
+        rgba(255, 255, 255, 0.9) 7px 14px,
+        transparent 14px 21px
+    );
+    border-radius: 2px;
+}
+.film-holes-top { top: 6px; }
+.film-holes-bottom { bottom: 6px; }
+
+/* Khung ảnh trong dải film */
+.film-frame {
+    width: 150px;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    border-radius: 4px;
+    background: #000;
+    cursor: zoom-in;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
+}
+.film-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s var(--ease-soft);
+}
+.film-frame:hover img { transform: scale(1.06); }
+
+.film-caption {
+    font-size: 1.6rem;
+    color: var(--pink-dark);
+    margin-top: 14px;
+    filter: drop-shadow(0 2px 6px rgba(255, 93, 143, 0.2));
+}
+
+/* ----- 3 ảnh gim cân đối ngay dưới đồng hồ đếm ngày ----- */
+.hero-scatter {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 22px;
+    margin: 26px auto 6px;
+    max-width: 720px;
+}
+.hero-scatter .photo-float {
+    position: static;
+    width: 200px;
+    margin: 0;
+    animation: none; /* gim cố định, chỉ nghiêng (không bồng bềnh) cho cân đối */
+}
+
+/* Dải film: thu nhỏ khung cho vừa màn hình nhỏ (vẫn đủ 4 ảnh 1 hàng) */
+@media (max-width: 600px) {
+    .film-frame { width: 88px; }
+    .film-strip { gap: 7px; padding: 16px 10px; }
+    .film-caption { font-size: 1.3rem; }
+}
+@media (max-width: 430px) {
+    .film-frame { width: 70px; }
+    .film-strip { gap: 6px; }
+}
+
+/* ----- Bố cục 2 cột (ảnh + nội dung) cho mục thư & câu hỏi: lấp đầy bề ngang ----- */
+.split-layout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 48px;
+    max-width: 1080px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+.split-layout.reverse { flex-direction: row-reverse; }
+
+/* Trong bố cục 2 cột, ảnh trở thành cột tĩnh (bỏ định vị tuyệt đối) */
+.split-layout .photo-float {
+    position: static;
+    top: auto; left: auto; right: auto; bottom: auto;
+    width: 260px;
+    flex: 0 0 auto;
+    margin: 0;
+}
+
+.split-layout .letter-box,
+.split-layout .question-box {
+    margin: 0;
+    flex: 1 1 440px;
+}
+
+/* Màn hình rất rộng: cho ảnh tách rời to hơn nữa */
+@media (min-width: 1400px) {
+    .hero .photo-float.pf-1 { width: 240px; }
+    .hero .photo-float.pf-2 { width: 260px; }
+    .letter-section .photo-float { width: 240px; }
+    .question-section .photo-float { width: 240px; }
+}
+
+/* Màn hình hẹp (≤1100px): KHÔNG ẩn ảnh nữa — chuyển sang nằm trong dòng, căn giữa,
+   để ảnh luôn hiển thị và không đè lên chữ. */
+@media (max-width: 1100px) {
+    .photo-float {
+        position: static !important;
+        top: auto !important;
+        bottom: auto !important;
+        left: auto !important;
+        right: auto !important;
+        width: 200px !important;
+        margin: 26px auto 0 !important;
+        animation: none !important;
+    }
+
+    /* Bố cục 2 cột -> xếp dọc, ảnh nằm trên nội dung */
+    .split-layout,
+    .split-layout.reverse {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+
+    /* Ảnh gim lệch trái/phải NGẪU NHIÊN (JS gắn class) cho tự nhiên, không cố định giữa */
+    .split-layout > .photo-float.pin-left {
+        align-self: flex-start !important;
+        margin: 22px 0 8px 6% !important;
+    }
+    .split-layout > .photo-float.pin-right {
+        align-self: flex-end !important;
+        margin: 22px 6% 8px 0 !important;
+    }
 }
 
 .photo-caption {
@@ -677,10 +983,134 @@ body {
 }
 
 /* ==========================================================================
+   5.5 LOVE STORY TIMELINE
+   ========================================================================== */
+.timeline-section {
+    position: relative;
+    z-index: 2;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 70px 20px;
+}
+
+.timeline {
+    position: relative;
+    margin-top: 36px;
+}
+
+/* Đường kẻ dọc ở giữa */
+.timeline::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    left: 50%;
+    width: 3px;
+    transform: translateX(-50%);
+    background: linear-gradient(var(--pink-sweet), var(--pink-rose));
+    border-radius: 3px;
+}
+
+.tl-item {
+    position: relative;
+    width: 50%;
+    padding: 14px 44px;
+    box-sizing: border-box;
+}
+.tl-item:nth-child(odd)  { left: 0;   text-align: right; }
+.tl-item:nth-child(even) { left: 50%; text-align: left; }
+
+.tl-card {
+    display: inline-block;
+    text-align: left;
+    max-width: 360px;
+    background: var(--glass-bg-strong);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-glow);
+    border-radius: 18px;
+    padding: 16px 20px;
+    transition: transform 0.4s var(--ease-soft), box-shadow 0.4s var(--ease-soft);
+}
+.tl-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: var(--shadow-medium);
+}
+
+.tl-photo {
+    display: block;
+    width: 100%;
+    max-width: 240px;   /* ảnh dọc hiện TRỌN VẸN, không bị cắt */
+    height: auto;
+    margin: 0 auto 12px;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(201, 24, 74, 0.14);
+}
+
+.tl-date {
+    display: inline-block;
+    font-weight: 700;
+    font-size: 0.82rem;
+    letter-spacing: 1px;
+    color: var(--pink-hot);
+    background: var(--pink-light);
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 6px;
+}
+.tl-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.75rem;
+    color: var(--pink-dark);
+    margin-bottom: 4px;
+}
+.tl-text {
+    font-size: 0.98rem;
+    line-height: 1.6;
+    color: var(--dark-text);
+    font-weight: 500;
+}
+
+/* Chấm tròn trái tim trên đường kẻ */
+.tl-dot {
+    position: absolute;
+    top: 24px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--grad-romance);
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 3px var(--pink-rose), 0 4px 10px rgba(255, 93, 143, 0.4);
+    z-index: 2;
+}
+.tl-item:nth-child(odd)  .tl-dot { right: -10px; }
+.tl-item:nth-child(even) .tl-dot { left: -10px; }
+
+/* Mobile: đường kẻ dồn về trái, tất cả mốc thẳng hàng */
+@media (max-width: 768px) {
+    .timeline::before { left: 18px; }
+    .tl-item,
+    .tl-item:nth-child(odd),
+    .tl-item:nth-child(even) {
+        width: 100%;
+        left: 0;
+        text-align: left;
+        padding: 12px 12px 12px 48px;
+    }
+    .tl-item:nth-child(odd) .tl-dot,
+    .tl-item:nth-child(even) .tl-dot {
+        left: 8px;
+        right: auto;
+    }
+    .tl-card { max-width: 100%; }
+}
+
+/* ==========================================================================
    6. LOVE LETTER SECTION (TYPING ANIMATION)
    ========================================================================== */
 .letter-section {
-    padding: 80px 20px;
+    padding: 60px 20px;
     z-index: 2;
     position: relative;
 }
@@ -688,11 +1118,12 @@ body {
 .letter-box {
     max-width: 650px;
     margin: 0 auto;
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
+    background: var(--glass-bg-strong);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
     border: 1px solid var(--glass-border);
-    box-shadow: var(--shadow-soft);
-    border-radius: 24px;
+    box-shadow: var(--shadow-glow);
+    border-radius: 26px;
     padding: 30px;
     position: relative;
 }
@@ -794,7 +1225,7 @@ body {
    7. QUESTION & INTERACTIVE LOVE GAME SECTION
    ========================================================================== */
 .question-section {
-    padding: 100px 20px;
+    padding: 70px 20px 80px;
     z-index: 2;
     position: relative;
 }
@@ -802,15 +1233,28 @@ body {
 .question-box {
     max-width: 600px;
     margin: 0 auto;
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    border: 2px solid var(--glass-border);
-    box-shadow: var(--shadow-soft);
-    border-radius: 28px;
-    padding: 40px 30px;
+    background: var(--glass-bg-strong);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-glow);
+    border-radius: 30px;
+    padding: 44px 32px;
     text-align: center;
     position: relative;
     overflow: hidden;
+}
+
+/* Soft top sheen on the question card */
+.question-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), transparent);
+    pointer-events: none;
 }
 
 .kitty-icon-bounce {
@@ -845,30 +1289,48 @@ body {
     justify-content: center;
     gap: 30px;
     align-items: center;
-    min-height: 80px;
+    min-height: 90px;
     position: relative;
 }
 
 .ans-btn {
-    padding: 14px 28px;
+    position: relative;
+    overflow: hidden;
+    padding: 15px 30px;
     font-family: 'Quicksand', sans-serif;
     font-size: 1.05rem;
     font-weight: 700;
     border: none;
     border-radius: 50px;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(255, 77, 109, 0.15);
-    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+    box-shadow: 0 6px 18px rgba(255, 93, 143, 0.18);
+    transition: transform 0.25s var(--ease-soft), box-shadow 0.25s var(--ease-soft), background-color 0.2s;
+}
+
+/* Light sweep that glides across buttons */
+.ans-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.6s var(--ease-soft);
+}
+
+.ans-btn:hover::before {
+    left: 130%;
 }
 
 #yes-btn {
-    background-color: var(--pink-hot);
+    background: var(--grad-romance);
     color: var(--white);
     animation: pulse 1.8s infinite;
 }
 
 #yes-btn:hover {
-    background-color: var(--pink-dark);
     transform: scale(1.1);
     box-shadow: var(--shadow-medium);
 }
@@ -879,11 +1341,15 @@ body {
     border: 2px solid var(--pink-sweet);
     position: relative;
     z-index: 10;
+    /* Con trỏ xuyên qua: KHÔNG BAO GIỜ bấm/đè trúng được, kể cả khi rê chuột thật nhanh.
+       Việc né chỉ để vui mắt; còn click thì chắc chắn không thể. */
+    pointer-events: none;
 }
 
 #no-btn.moving {
-    position: absolute;
-    transition: all 0.15s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: fixed;
+    z-index: 9990; /* trên nội dung, dưới modal/lightbox */
+    transition: left 0.18s cubic-bezier(0.25, 0.8, 0.25, 1), top 0.18s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 /* ==========================================================================
@@ -920,7 +1386,45 @@ body {
     text-align: center;
     max-width: 500px;
     width: 100%;
+    position: relative;
+    overflow: hidden;
     animation: popUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Tim bay lãng mạn bên trong modal */
+.modal-hearts {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+.modal-hearts span {
+    position: absolute;
+    bottom: -24px;
+    font-size: 1.3rem;
+    opacity: 0;
+    animation: modalFloat 4s ease-in infinite;
+}
+.modal-hearts span:nth-child(1) { left: 6%;  animation-delay: 0s;   }
+.modal-hearts span:nth-child(2) { left: 22%; animation-delay: 1.4s; font-size: 1rem; }
+.modal-hearts span:nth-child(3) { left: 38%; animation-delay: 2.6s; }
+.modal-hearts span:nth-child(4) { left: 54%; animation-delay: 0.7s; font-size: 1.6rem; }
+.modal-hearts span:nth-child(5) { left: 70%; animation-delay: 2.0s; }
+.modal-hearts span:nth-child(6) { left: 84%; animation-delay: 1.0s; font-size: 1.1rem; }
+.modal-hearts span:nth-child(7) { left: 92%; animation-delay: 3.0s; }
+.modal-hearts span:nth-child(8) { left: 14%; animation-delay: 3.4s; font-size: 1.5rem; }
+
+@keyframes modalFloat {
+    0%   { transform: translateY(0) scale(0.6) rotate(0deg); opacity: 0; }
+    18%  { opacity: 0.9; }
+    100% { transform: translateY(-300px) scale(1.1) rotate(20deg); opacity: 0; }
+}
+
+/* Đảm bảo nội dung modal nổi trên lớp tim bay */
+.modal-content > *:not(.modal-hearts) { position: relative; z-index: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+    .modal-hearts { display: none; }
 }
 
 .modal-kitty {
@@ -929,9 +1433,64 @@ body {
 }
 
 .kitty-success-svg {
-    width: 120px;
+    width: 82px;
     height: auto;
     filter: drop-shadow(0 6px 12px rgba(255, 77, 109, 0.2));
+}
+
+/* Ảnh hôn trong modal: khung tròn, vòng sáng xoay, dấu hôn nảy ra */
+.modal-photo {
+    position: relative;
+    width: 168px;
+    height: 168px;
+    margin: 4px auto 20px;
+}
+.modal-photo img {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 5px solid #fff;
+    box-shadow: 0 12px 28px rgba(255, 93, 143, 0.4);
+    animation: photoPop 0.6s var(--ease-soft) both;
+}
+.modal-photo-ring {
+    position: absolute;
+    inset: -9px;
+    z-index: 1;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, var(--pink-hot), var(--lavender), var(--pink-rose), var(--peach), var(--pink-hot));
+    filter: blur(3px);
+    opacity: 0.9;
+    animation: spin 6s linear infinite;
+}
+.kiss-stamp {
+    position: absolute;
+    top: -8px;
+    right: -4px;
+    z-index: 3;
+    font-size: 2.4rem;
+    transform: scale(0) rotate(-30deg);
+    animation: kissStamp 2.6s ease-in-out infinite;
+    filter: drop-shadow(0 2px 5px rgba(201, 24, 74, 0.45));
+}
+
+@keyframes photoPop {
+    from { transform: scale(0.5); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+}
+@keyframes kissStamp {
+    0%, 100% { transform: scale(0) rotate(-30deg); opacity: 0; }
+    14%      { transform: scale(1.35) rotate(10deg); opacity: 1; }
+    32%      { transform: scale(1) rotate(-6deg); opacity: 1; }
+    62%      { transform: scale(1) rotate(-6deg); opacity: 1; }
+    82%      { transform: scale(1.08) rotate(-12deg); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .modal-photo-ring, .kiss-stamp, .modal-photo img { animation: none !important; }
 }
 
 .modal-content h2 {
@@ -991,8 +1550,129 @@ body {
 }
 
 /* ==========================================================================
+   9.5 PHOTO LIGHTBOX (CLICK TO ENLARGE)
+   ========================================================================== */
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 10001;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+    background: rgba(80, 30, 50, 0.55);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s var(--ease-soft), visibility 0.4s;
+}
+
+.lightbox.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.lightbox-stage {
+    position: relative;
+    max-width: min(86vw, 720px);
+    max-height: 78vh;
+    background: #fff;
+    padding: 16px 16px 20px;
+    border-radius: 12px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+    transform: scale(0.85);
+    transition: transform 0.45s var(--ease-soft);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.lightbox.open .lightbox-stage {
+    transform: scale(1);
+}
+
+.lightbox-img {
+    max-width: 100%;
+    max-height: 64vh;
+    object-fit: contain;
+    border-radius: 6px;
+    background: #fdf2f6;
+}
+
+.lightbox-caption {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--pink-dark);
+    text-align: center;
+    margin-top: 12px;
+    padding: 0 10px;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: -18px;
+    right: -18px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: var(--grad-romance);
+    color: #fff;
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: var(--shadow-medium);
+    transition: transform 0.2s var(--ease-soft);
+}
+.lightbox-close:hover { transform: rotate(90deg) scale(1.1); }
+
+.lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--pink-hot);
+    font-size: 1.6rem;
+    cursor: pointer;
+    box-shadow: var(--shadow-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s var(--ease-soft), background 0.2s;
+}
+.lightbox-nav:hover { background: #fff; transform: translateY(-50%) scale(1.12); }
+.lightbox-prev { left: -64px; }
+.lightbox-next { right: -64px; }
+
+@media (max-width: 768px) {
+    .lightbox-prev { left: 8px; }
+    .lightbox-next { right: 8px; }
+    .lightbox-nav { background: rgba(255, 255, 255, 0.92); }
+}
+
+/* ==========================================================================
    10. KEYFRAMES & ANIMATIONS
    ========================================================================== */
+
+/* Aurora background drift */
+@keyframes aurora-drift {
+    0%   { transform: translate3d(0, 0, 0) scale(1); }
+    50%  { transform: translate3d(2%, -3%, 0) scale(1.08); }
+    100% { transform: translate3d(-2%, 2%, 0) scale(1.04); }
+}
+
+/* Shimmer for gradient text (animated background-position) */
+@keyframes shimmer {
+    0%   { background-position: 0% center; }
+    100% { background-position: 220% center; }
+}
 
 /* Heartbeat Pulse */
 @keyframes heartbeat {
@@ -1024,6 +1704,12 @@ body {
     to {
         transform: rotate(360deg);
     }
+}
+
+/* 3D bobbing float for scrapbook photos (lắc nhẹ theo trục Y tạo chiều sâu) */
+@keyframes float3d {
+    0%, 100% { transform: perspective(800px) translateY(0) rotateY(-7deg) rotateZ(-0.5deg); }
+    50%      { transform: perspective(800px) translateY(-15px) rotateY(7deg) rotateZ(0.5deg); }
 }
 
 /* Float floating decoration elements */
@@ -1067,6 +1753,12 @@ body {
 /* ==========================================================================
    11. RESPONSIVE MEDIA QUERIES
    ========================================================================== */
+
+@media (max-width: 1024px) {
+    .polaroid-grid {
+        column-count: 3;
+    }
+}
 
 @media (max-width: 768px) {
     .envelope-wrapper {
@@ -1132,8 +1824,11 @@ body {
     }
     
     .polaroid-grid {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 20px;
+        column-count: 2;
+        column-gap: 18px;
+    }
+    .polaroid-card {
+        margin-bottom: 18px;
     }
     
     .letter-box {
@@ -1195,8 +1890,8 @@ body {
     }
     
     .polaroid-grid {
-        grid-template-columns: 1fr;
-        max-width: 280px;
+        column-count: 1;
+        max-width: 300px;
         margin: 0 auto;
     }
     
@@ -1212,6 +1907,72 @@ body {
     }
     
     #no-btn.moving {
-        position: absolute;
+        position: fixed;
     }
+}
+
+/* ==========================================================================
+   12. MOBILE EXPERIENCE OPTIMIZATION (mobile-first polish)
+   ========================================================================== */
+html { -webkit-text-size-adjust: 100%; }
+body {
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-y: contain;
+}
+
+/* Chiều cao động: tránh giật khi thanh địa chỉ trình duyệt mobile ẩn/hiện */
+.hero { min-height: 100svh; }
+
+/* Touch target chuẩn cho nút điều khiển nhạc (mặc định to hơn chút) */
+.control-btn { width: 32px; height: 32px; }
+.control-icon { width: 16px; height: 16px; }
+
+@media (max-width: 768px) {
+    /* Hero: cuộn tự nhiên khi nội dung dài, không căn giữa gây tràn/cắt */
+    .hero {
+        justify-content: flex-start;
+        padding: 86px 18px 50px;
+    }
+
+    /* Nhịp khoảng cách dọc gọn gàng hơn trên mobile */
+    .gallery-section  { padding: 50px 16px; }
+    .timeline-section { padding: 50px 16px; }
+    .letter-section   { padding: 46px 16px; }
+    .question-section { padding: 50px 16px 64px; }
+    .section-desc     { margin-bottom: 30px; }
+    .footer           { margin-top: 24px; }
+
+    /* Chữ luôn dễ đọc (>=16px) */
+    .love-footer-text { font-size: 1rem; }
+    .ask-text         { font-size: 1.05rem; }
+    .tl-text          { font-size: 1rem; }
+
+    /* Nút & vùng chạm đạt chuẩn >=44px */
+    .ans-btn      { min-height: 48px; padding: 14px 26px; }
+    .control-btn  { width: 42px; height: 42px; }
+    .control-icon { width: 19px; height: 19px; }
+    .music-player { max-width: 230px; }
+    .close-modal-btn { min-height: 48px; }
+
+    /* 3 ảnh gim: hàng 3 cân đối, vừa khít màn hình */
+    .hero-scatter { gap: 12px; margin: 18px auto 2px; max-width: 100%; }
+    .hero-scatter .photo-float { width: 30%; }
+
+    /* Lightbox: nút điều hướng to, trong tầm ngón tay */
+    .lightbox-nav   { width: 46px; height: 46px; }
+    .lightbox-prev  { left: 6px; }
+    .lightbox-next  { right: 6px; }
+    .lightbox-close { width: 46px; height: 46px; top: -8px; right: 4px; }
+}
+
+@media (max-width: 480px) {
+    .love-subtitle { font-size: 1.05rem; line-height: 1.5; }
+    .section-title { font-size: 2.2rem; }
+    .tl-title      { font-size: 1.5rem; }
+    .film-caption  { font-size: 1.2rem; }
+    .modal-content { padding: 30px 20px; }
+    .modal-content h2 { font-size: 2.2rem; }
+    .music-player  { max-width: 210px; }
+    /* 3 ảnh gim vẫn 3 hàng ngang nhưng nhỏ gọn */
+    .hero-scatter .photo-float { width: 30%; }
 }
